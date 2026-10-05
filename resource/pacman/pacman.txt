@@ -17,6 +17,7 @@ fsarchiver
 glances
 go
 jdk17-openjdk
+jdk21-openjdk
 libdvdcss
 libreoffice-fresh
 libreoffice-fresh-zh-cn

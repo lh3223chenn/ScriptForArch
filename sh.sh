@@ -17,6 +17,15 @@ SUDO_KEEPALIVE_PID=$!
 # 脚本退出时停止刷新
 trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
 
+
+if sudo pacman -Syu --noconfirm ; then
+    sudo pacman -S rate-mirrors --noconfirm --needed
+else
+    echo "更新失败喵~" >&2
+    exit 1
+fi
+rate-mirrors --save=/tmp/mirrorlist arch && sudo mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
+
 sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
 
 [archlinuxcn]
@@ -30,12 +39,11 @@ else
     echo "错误：archlinuxcn 仓库添加失败" >&2
     exit 1
 fi
-
-if sudo pacman -Syu --noconfirm ; then
-    sudo pacman -S archlinuxcn-keyring git yay jdk21-openjdk --noconfirm --needed
+if sudo pacman -Sy --noconfirm ; then
+  sudo pacman -S archlinuxcn-keyring git yay --noconfirm --needed
 else
-    echo "更新失败喵~" >&2
-    exit 1
+  echo "下载失败喵~" >&2
+  exit 1
 fi
 
 chmod +x ./resource/sh/*.sh
