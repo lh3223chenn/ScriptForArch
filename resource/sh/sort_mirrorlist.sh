@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo "开始镜像排序..."
-Sleep 2
+sleep 2
 
 sudo pacman -S rate-mirrors --noconfirm --needed
 

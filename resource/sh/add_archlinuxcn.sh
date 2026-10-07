@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-Arch_File="../pacman/arch_pacman.conf"
-CachyOS_File="../pacman/cachyos_pacman.conf"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+Arch_File="$SCRIPT_DIR/../pacman/arch_pacman.conf"
+CachyOS_File="$SCRIPT_DIR/../pacman/cachyos_pacman.conf"
 
 if [[ $EUID -ne 0 ]]; then
     echo "必须以 root 身份运行。"
@@ -48,7 +50,7 @@ if grep -qF '[archlinuxcn]' /etc/pacman.conf &&
     fi
 else
     echo "我们没有成功添加archlinuxcn，准备回退这次操作..."
-    Sleep 3
+    sleep 3
     sudo cp -p /tmp/pacman.conf.backup /etc/pacman.conf
     sudo pacman -Sy --noconfirm
     exit 1

@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo "我们正在为您更新系统，请耐心等待..."
-Sleep 3
+sleep 3
 
 if sudo pacman -Syu --noconfirm ; then
     echo "感谢您的耐心，即将进入下一步..."

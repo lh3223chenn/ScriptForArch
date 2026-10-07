@@ -2,8 +2,10 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "我们需要先确认您的发行版..."
-Distribution="$(./resource/sh/get_distribution.sh)"
+Distribution="$("$SCRIPT_DIR/resource/sh/get_distribution.sh")"
 case "$Distribution" in
   cachyos|arch)
     echo "你的系统是：$Distribution，可以使用这个脚本！"
@@ -54,22 +56,22 @@ SUDO_KEEPALIVE_PID=$!
 # 脚本退出时停止刷新
 trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
 
-chmod +x ./resource/sh/*.sh
+chmod +x "$SCRIPT_DIR"/resource/sh/*.sh
 
-if UPDATE_SYSTEM_RESULT="$(sudo bash ./resource/sh/update_system.sh)"; then
+if UPDATE_SYSTEM_RESULT="$(sudo bash "$SCRIPT_DIR/resource/sh/update_system.sh")"; then
   echo "$UPDATE_SYSTEM_RESULT"
 fi
 
-if SORT_MIRRORLIST_RESULT="$(sudo bash ./resource/sh/sort_mirrorlist.sh)"; then
+if SORT_MIRRORLIST_RESULT="$(sudo bash "$SCRIPT_DIR/resource/sh/sort_mirrorlist.sh")"; then
   echo "$SORT_MIRRORLIST_RESULT"
 fi
 
-if ADD_ARCHLINUXCN_RESULT="$(sudo env Distribution="$Distribution" bash ./resource/sh/add_archlinuxcn.sh)"; then
+if ADD_ARCHLINUXCN_RESULT="$(sudo env Distribution="$Distribution" bash "$SCRIPT_DIR/resource/sh/add_archlinuxcn.sh")"; then
   echo "$ADD_ARCHLINUXCN_RESULT"
 fi
 
 
-if ! TERMINAL="$("./resource/sh/get_terminal.sh")"; then
+if ! TERMINAL="$("$SCRIPT_DIR/resource/sh/get_terminal.sh")"; then
     echo "错误：系统中没有找到可用的终端模拟器。" >&2
     exit 1
 fi
