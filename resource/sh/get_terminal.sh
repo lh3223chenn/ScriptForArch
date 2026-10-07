@@ -42,7 +42,7 @@ case "$answer" in
     ""|y|Y|yes|Yes|YES)
         echo "正在安装 Alacritty..." >&2
 
-        if ! sudo pacman -S --needed alacritty; then
+        if ! sudo pacman -S alacritty --needed --noconfirm > /dev/null; then
             echo "错误：Alacritty 安装失败。" >&2
             exit 1
         fi
@@ -67,6 +67,7 @@ if command -v alacritty >/dev/null 2>&1; then
     exit 0
 fi
 
-echo "错误：Alacritty 安装完成后仍无法找到命令。" >&2
+echo "我们没有成功下载任何终端软件..." 2>&1
+echo "null"
 exit 1
 

@@ -6,13 +6,13 @@ if [[ -r /etc/os-release ]]; then
     # shellcheck disable=SC1091
     . /etc/os-release
     if [[ -n "${ID:-}" ]]; then
-        printf '%s\n' "${ID,,}"
+        echo "${ID,,}"
         exit 0
     fi
     if [[ -n "${NAME:-}" ]]; then
-        printf '%s\n' "${NAME,,}"
+        echo "${NAME,,}"
         exit 0
     fi
 fi
 
-printf 'unknown\n'
+echo "unknown"

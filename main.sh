@@ -4,9 +4,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-bash "$SCRIPT_DIR"/resource/sh/welcome.sh
+chmod +x "$SCRIPT_DIR"/resource/sh/*.sh
 
-echo "输入你的root密码，只需要输入一次就行..."
+Distribution="$(bash "$SCRIPT_DIR/resource/sh/welcome.sh")"
+
+echo "输入你的root密码，只需要输入一次就行..." >&2
 # 第一次执行时要求输入密码
 sudo -v
 
@@ -20,25 +22,15 @@ sudo -v
 SUDO_KEEPALIVE_PID=$!
 
 # 脚本退出时停止刷新
+
+sudo bash "$SCRIPT_DIR/resource/sh/update_system.sh"
+
+sudo bash "$SCRIPT_DIR/resource/sh/sort_mirrorlist.sh"
+
+sudo env Distribution="$Distribution" bash "$SCRIPT_DIR/resource/sh/add_archlinuxcn.sh"
+
+GET_TERMINAL_RESULT="$(sudo bash "$SCRIPT_DIR/resource/sh/get_terminal.sh")"
+
+
+
 trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
-
-chmod +x "$SCRIPT_DIR"/resource/sh/*.sh
-
-if UPDATE_SYSTEM_RESULT="$(sudo bash "$SCRIPT_DIR/resource/sh/update_system.sh")"; then
-  echo "$UPDATE_SYSTEM_RESULT"
-fi
-
-if SORT_MIRRORLIST_RESULT="$(sudo bash "$SCRIPT_DIR/resource/sh/sort_mirrorlist.sh")"; then
-  echo "$SORT_MIRRORLIST_RESULT"
-fi
-
-if ADD_ARCHLINUXCN_RESULT="$(sudo env Distribution="$Distribution" bash "$SCRIPT_DIR/resource/sh/add_archlinuxcn.sh")"; then
-  echo "$ADD_ARCHLINUXCN_RESULT"
-fi
-
-
-if ! TERMINAL="$("$SCRIPT_DIR/resource/sh/get_terminal.sh")"; then
-    echo "错误：系统中没有找到可用的终端模拟器。" >&2
-    exit 1
-fi
-echo "启动 Steam 更新脚本..."
