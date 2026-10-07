@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "我们需要先确认您的发行版..."
+Distribution="$(./resource/sh/get_distribution.sh)"
+case "$Distribution" in
+  cachyos|arch)
+    echo "你的系统是：$Distribution，可以使用这个脚本！"
+    ;;
+  unknown)
+    echo "这是个什么系统？"
+    exit 1
+    ;;
+  *)
+    echo "我们暂时不支持 $Distribution"
+    exit 1
+    ;;
+esac
+
+echo "你真的要使用这个脚本吗喵~[Y/n]"
+read -r answer
+case "$answer" in
+    ""|y|Y|yes|Yes|YES)
+        echo "那么我们开始吧！" >&2
+        ;;
+
+    n|N|no|No|NO)
+        echo "下次再见喵" >&2
+        exit 1
+        ;;
+
+    *)
+        echo "你应该是按错了喵" >&2
+        exit 1
+        ;;
+esac
+
+
+
+echo "输入你的root密码，只需要输入一次就行..."
+# 第一次执行时要求输入密码
+sudo -v
+
+# 后台持续刷新 sudo 认证
+(
+    while true; do
+        sudo -n -v
+        sleep 60
+    done
+) &
+SUDO_KEEPALIVE_PID=$!
+
+# 脚本退出时停止刷新
+trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
+
+chmod +x ./resource/sh/*.sh
+
+if UPDATE_SYSTEM_RESULT="$(sudo bash ./resource/sh/update_system.sh)"; then
+  echo "$UPDATE_SYSTEM_RESULT"
+fi
+
+if SORT_MIRRORLIST_RESULT="$(sudo bash ./resource/sh/sort_mirrorlist.sh)"; then
+  echo "$SORT_MIRRORLIST_RESULT"
+fi
+
+if ADD_ARCHLINUXCN_RESULT="$(sudo env Distribution="$Distribution" bash ./resource/sh/add_archlinuxcn.sh)"; then
+  echo "$ADD_ARCHLINUXCN_RESULT"
+fi
+
+
+if ! TERMINAL="$("./resource/sh/get_terminal.sh")"; then
+    echo "错误：系统中没有找到可用的终端模拟器。" >&2
+    exit 1
+fi
+echo "启动 Steam 更新脚本..."
