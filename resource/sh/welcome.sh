@@ -24,6 +24,8 @@ case "$Distribution" in
     ;;
 esac
 
+mkdir -p "$SCRIPT_DIR"/../cache
+
 echo "你真的要使用这个脚本吗喵~[Y/n]" >&2
 read -r answer
 case "$answer" in

@@ -27,9 +27,9 @@ sudo bash "$SCRIPT_DIR/resource/sh/update_system.sh"
 
 sudo bash "$SCRIPT_DIR/resource/sh/sort_mirrorlist.sh"
 
-sudo env Distribution="$Distribution" bash "$SCRIPT_DIR/resource/sh/add_archlinuxcn.sh"
+ENABLE_ARCHLINUXCN="$(sudo env Distribution="$Distribution" bash "$SCRIPT_DIR/resource/sh/add_archlinuxcn.sh")"
 
-GET_TERMINAL_RESULT="$(sudo bash "$SCRIPT_DIR/resource/sh/get_terminal.sh")"
+USED_TERMINAL="$(sudo bash "$SCRIPT_DIR/resource/sh/get_terminal.sh")"
 
 
 
