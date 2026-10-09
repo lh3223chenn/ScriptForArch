@@ -34,14 +34,14 @@ if [[ $EUID -ne 0 ]]; then
     echo ask
 fi
 
-if [[ -z "${Distribution:-}" ]]; then
-    echo "没有收到 Distribution" 2>&1
+if [[ -z "${DISTRIBUTION:-}" ]]; then
+    echo "没有收到 DISTRIBUTION" 2>&1
     echo ask
 fi
 
 sudo cp -p /etc/pacman.conf "$SCRIPT_DIR"/../cache/pacman.conf.backup
 
-case "$Distribution" in
+case "$DISTRIBUTION" in
   arch)
     if [[ -e "$Arch_File" ]]; then
       sudo cp -f "$Arch_File" /etc/pacman.conf

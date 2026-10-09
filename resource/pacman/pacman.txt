@@ -12,12 +12,10 @@ fcitx5-gtk
 fcitx5-qt
 fcitx5-rime
 ffmpegthumbnailer
-flatpak
 fsarchiver
 glances
 go
 jdk17-openjdk
-jdk21-openjdk
 libdvdcss
 libreoffice-fresh
 libreoffice-fresh-zh-cn
@@ -32,7 +30,6 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 npm
-paru
 pavucontrol
 pdfarranger
 protonplus
