@@ -9,17 +9,18 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "我们需要先确认您的发行版..." >&2
-Distribution="$("$SCRIPT_DIR/get_distribution.sh")"
-case "$Distribution" in
+DISTRIBUTION="$("$SCRIPT_DIR/get_distribution.sh")"
+case "$DISTRIBUTION" in
   cachyos|arch)
-    echo "你的系统是：$Distribution，可以使用这个脚本！" >&2
+    echo "你的系统是：$DISTRIBUTION，可以使用这个脚本！" >&2
+    echo "$DISTRIBUTION"
     ;;
   unknown)
     echo "这是个什么系统？" >&2
     exit 1
     ;;
   *)
-    echo "我们暂时不支持 $Distribution" >&2
+    echo "我们暂时不支持 $DISTRIBUTION" >&2
     exit 1
     ;;
 esac
@@ -31,7 +32,7 @@ read -r answer
 case "$answer" in
     ""|y|Y|yes|Yes|YES)
         echo "那么我们开始吧！" >&2
-        echo "$Distribution"
+        echo "$DISTRIBUTION"
         ;;
 
     n|N|no|No|NO)
