@@ -19,6 +19,8 @@ sudo -v
 ) &
 SUDO_KEEPALIVE_PID=$!
 
+DESKTOP_ENV="$(bash "$SCRIPT_DIR/resource/sh/get_desktop_env.sh")"
+
 sudo bash "$SCRIPT_DIR"/resource/sh/change_language.sh
 
 DISTRIBUTION="$(bash "$SCRIPT_DIR/resource/sh/welcome.sh")"
