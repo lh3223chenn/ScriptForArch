@@ -33,6 +33,8 @@ ENABLE_ARCHLINUXCN="$(sudo env DISTRIBUTION="$DISTRIBUTION" bash "$SCRIPT_DIR/re
 
 USED_TERMINAL="$(sudo bash "$SCRIPT_DIR/resource/sh/get_terminal.sh")"
 
-sudo bash "$SCRIPT_DIR"/resource/sh/install.necessary.sh
+sudo bash "$SCRIPT_DIR"/resource/sh/install_necessary.sh
+
+sudo bash "$SCRIPT_DIR"/resource/sh/install_flatpak.sh
 
 trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
